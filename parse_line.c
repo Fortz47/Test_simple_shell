@@ -11,7 +11,7 @@ parse *parse_line(char *line)
 	const char *delim = " ";
 
 	token = strtok(line, delim);
-	if (!token)
+	if (!token || !line)
 		return (NULL);
 	ptr = malloc(sizeof(parse) + sizeof(char *) * (MAX_ARG + 1));
 	if (ptr == NULL)
