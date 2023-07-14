@@ -8,12 +8,13 @@ int main(int ac, char *av[])
 	pid_t pid;
 	int i;
 	ssize_t read;
-
-	char *buffer = NULL;
-	size_t len = 0;
+	char *buffer;
+	size_t len;
 
 	while (TRUE)
 	{
+		buffer = NULL;
+		len = 0;
 		write(STDOUT_FILENO, "($) ", 4);
 		read = getline(&buffer, &len, stdin);
 		if (read != -1)
