@@ -37,14 +37,14 @@ int main(int ac, char *av[])
 		pid = fork();
 		if (pid == -1)
 		{
-			dprintf(2,"can't fork process: %s", strerror(errno));
+			dprintf(2,"can't fork process: %s\n", strerror(errno));
 			continue;
 		}
 		if (pid == 0)
 		{
 			if ((execv(parsed->cmd, parsed->args)) == -1)
 			{
-				dprintf(2,"error: %s", strerror(errno));
+				dprintf(2,"error: %s\n", strerror(errno));
 				continue;
 			}
 		}
