@@ -6,12 +6,13 @@ int main(int ac, char *av[])
 {
 	parse *parsed;
 	pid_t pid;
-	int i;
+	int i, status;
 	ssize_t read;
 	char *buffer;
 	size_t len;
 
-	while (TRUE)
+	status = TRUE;
+	while (status)
 	{
 		buffer = NULL;
 		len = 0;
@@ -26,8 +27,10 @@ int main(int ac, char *av[])
 			}
 		}
 		if (_strcmp((const char *)buffer, "exit"))
-			exit(EXIT_SUCCESS);
-
+		{
+			status = FALSE;
+			continue;
+		}
 		parsed = parse_line(buffer);
 		if (!parsed)
 			continue;
@@ -51,5 +54,6 @@ int main(int ac, char *av[])
 			free(parsed->args[i]);
 		free(parsed);
 	}
+	free(buffer);
 	return (0);
 }
