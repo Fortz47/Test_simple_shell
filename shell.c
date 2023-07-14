@@ -45,7 +45,8 @@ int main(int ac, char *av[])
 			if ((execv(parsed->cmd, parsed->args)) == -1)
 			{
 				dprintf(2,"error: %s\n", strerror(errno));
-				kill(pid, SIGTERM);
+				if (pid == 0)
+					kill(pid, SIGTERM);
 			}
 		}
 		free(buffer);
