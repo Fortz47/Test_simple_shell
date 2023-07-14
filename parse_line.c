@@ -6,23 +6,52 @@ parse *parse_line(char *line)
 {
 	parse *ptr;
 	char *token;
-	int i;
+	int argc, i;
 
-	const char *dilim = " -";
+	const char *delim = " ";
 
-	ptr = malloc(sizeof(parse *));
-	if (!ptr)
+	token = strtok(line, delim);
+	if (!token)
 		return (NULL);
-	token = strtok(line, dilim);
+	ptr = malloc(sizeof(parse) + sizeof(char *) * (MAX_ARG + 1));
+	if (ptr == NULL)
+		return (NULL);
 	ptr->cmd = _strdup(token);
-	ptr->args[0] = _strdup(token);
-	i = 1;
-	while (token != NULL)
+	if (!ptr->cmd)
 	{
-		token = strtok(NULL, dilim);
-		ptr->args[i] = _strdup(token);
-		i++;
+		fprintf(stderr, "Memory allocation failed.\n");
+		free(ptr);
+		return (NULL);
+	}
+	i = 0;
+	ptr->args[i] = _strdup(token);
+	if (!ptr->args[i])
+	{
+		fprintf(stderr, "Memory allocation failed.\n");
+		free(ptr->cmd);
+		free(ptr);
+		return NULL;
+	}
+	i++;
+	while (token != NULL && i < MAX_ARG)
+	{
+		token = strtok(NULL, delim);
+		if (token)
+		{
+			ptr->args[i] = _strdup(token);
+			if (!ptr->args[i])
+			{
+				fprintf(stderr, "Memory allocation failed.\n");
+				for (int j = 0; j < i; j++)
+					free(ptr->args[j]);
+				free(ptr->cmd);
+				free(ptr);
+				return NULL;
+			}
+			i++;
+		}
 	}
 	ptr->args[i] = NULL;
 	return (ptr);
 }
+

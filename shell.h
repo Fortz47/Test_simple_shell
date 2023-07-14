@@ -4,6 +4,7 @@
 #define TRUE 1
 #define FALSE 0
 #define BUFFER_SIZE 1024
+#define MAX_ARG 10
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,7 +17,7 @@
 typedef struct parse
 {
 	char *cmd;
-	char **args;
+	char *args[];
 } parse;
 
 int _strcmp(const char *s1, const char *s2);
