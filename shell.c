@@ -19,25 +19,9 @@ int main(int ac, char *av[])
 		len = 0;
 		write(STDOUT_FILENO, "($) ", 4);
 		read = getline(&buffer, &len, stdin);
-		if (read == -1)
+		if ((read = handle_EOF(read, &buffer)) == -1)
 		{
-			if (feof(stdin))
-			{
-				write(STDIN_FILENO, "\n", 1);
-				exit(EXIT_SUCCESS);
-			}
 			dprintf(STDERR_FILENO, "%s: %s\n", shell, strerror(errno));
-			continue;
-		}
-		else
-			if (buffer[read - 1] == '\n')
-			{
-				buffer[read - 1] = '\0';
-				read--;
-			}
-		if (_strcmp((const char *)buffer, "exit"))
-		{
-			status = FALSE;
 			continue;
 		}
 		parsed = parse_line(buffer);
