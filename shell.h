@@ -13,6 +13,7 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <fcntl.h>
 #include <signal.h>
 
 /**
@@ -27,5 +28,6 @@ int _strcmp(const char *s1, const char *s2);
 char *_strdup(char *str);
 parse *parse_line(char *line);
 int handle_EOF(ssize_t read, char **buffer);
+int load_config(void);
 
 #endif

@@ -11,8 +11,15 @@ int main(int ac, char *av[])
 	char *buffer, *shell;
 	size_t len;
 
+	char *const envp[] = {"PATH=/usr/local/bin:/usr/bin:$PATH", NULL};
+
 	shell = av[0];
 	status = TRUE;
+	/*if (load_config() == -1)
+	{
+		perror(shell);
+		exit(EXIT_FAILURE);
+	}*/
 	while (status)
 	{
 		buffer = NULL;
@@ -35,7 +42,7 @@ int main(int ac, char *av[])
 		}
 		if (pid == 0)
 		{
-			if ((execv(parsed->cmd, parsed->args)) == -1)
+			if ((execve(parsed->cmd, parsed->args, envp)) == -1)
 			{
 				dprintf(STDERR_FILENO, "%s: %s\n", shell, strerror(errno));
 				exit(EXIT_FAILURE);
