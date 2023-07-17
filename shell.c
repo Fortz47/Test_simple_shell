@@ -11,15 +11,10 @@ int main(int ac, char *av[])
 	char *buffer, *shell;
 	size_t len;
 
-	char *const envp[] = {"PATH=/usr/local/bin:/usr/bin:$PATH", NULL};
+	char *const envp[] = {NULL};
 
 	shell = av[0];
 	status = TRUE;
-	/*if (load_config() == -1)
-	{
-		perror(shell);
-		exit(EXIT_FAILURE);
-	}*/
 	while (status)
 	{
 		buffer = NULL;
@@ -34,6 +29,11 @@ int main(int ac, char *av[])
 		parsed = parse_line(buffer);
 		if (!parsed)
 			continue;
+		if (handle_path(parsed->cmd))
+		{
+			perror(shell);
+		}
+		else
 		pid = fork();
 		if (pid == -1)
 		{

@@ -28,6 +28,6 @@ int _strcmp(const char *s1, const char *s2);
 char *_strdup(char *str);
 parse *parse_line(char *line);
 int handle_EOF(ssize_t read, char **buffer);
-int load_config(void);
+int handle_path(char *cmd);
 
 #endif
