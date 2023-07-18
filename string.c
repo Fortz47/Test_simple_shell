@@ -60,7 +60,6 @@ char *_strdup(char *str)
 	return (arr);
 }
 
-#include "main.h"
 
 /**
  * _strcat - concatenate two strings
@@ -84,6 +83,6 @@ char *_strcat(char *dest, char *src)
 		i++;
 		j++;
 	}
-	/*dest[i] = '\0';*/
+	dest[i] = '\0';
 	return (dest);
 }

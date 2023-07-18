@@ -24,7 +24,7 @@ int handle_EOF(ssize_t read, char **buffer)
 		}
 		if (_strcmp(buf, "exit"))
 		{
-			free(buf);
+			free(buffer);
 			write(STDIN_FILENO, "logout\n", 8);
 			exit(EXIT_SUCCESS);
 		}

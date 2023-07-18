@@ -13,6 +13,7 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <sys/stat.h>
 #include <fcntl.h>
 #include <signal.h>
 
@@ -26,8 +27,11 @@ typedef struct parse
 
 int _strcmp(const char *s1, const char *s2);
 char *_strdup(char *str);
+char *_strcat(char *dest, char *src);
 parse *parse_line(char *line);
 int handle_EOF(ssize_t read, char **buffer);
-int handle_path(char *cmd);
+int handle_path(parse *parsed);
+char *mem_alloc(char *str);
+void free_arr_str(char **arr, int i, int j);
 
 #endif

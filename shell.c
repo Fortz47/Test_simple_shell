@@ -11,8 +11,6 @@ int main(int ac, char *av[])
 	char *buffer, *shell;
 	size_t len;
 
-	char *const envp[] = {NULL};
-
 	shell = av[0];
 	status = TRUE;
 	while (status)
@@ -23,39 +21,21 @@ int main(int ac, char *av[])
 		read = getline(&buffer, &len, stdin);
 		if ((read = handle_EOF(read, &buffer)) == -1)
 		{
-			dprintf(STDERR_FILENO, "%s: %s\n", shell, strerror(errno));
+			perror(shell);
 			continue;
 		}
 		parsed = parse_line(buffer);
 		if (!parsed)
 			continue;
-		if (handle_path(parsed->cmd))
+		if (handle_path(parsed) == -1)
 		{
 			perror(shell);
-		}
-		else
-		pid = fork();
-		if (pid == -1)
-		{
-			dprintf(STDERR_FILENO, "%s: %s\n", shell, strerror(errno));
-			continue;
-		}
-		if (pid == 0)
-		{
-			if ((execve(parsed->cmd, parsed->args, envp)) == -1)
-			{
-				dprintf(STDERR_FILENO, "%s: %s\n", shell, strerror(errno));
-				exit(EXIT_FAILURE);
-			}
 		}
 		free(buffer);
 		free(parsed->cmd);
 		for (i = 0; parsed->args[i] != NULL; i++)
 			free(parsed->args[i]);
 		free(parsed);
-		waitpid(pid, NULL, 0);
-		kill(pid, SIGTERM);
 	}
-	free(buffer);
 	return (0);
 }

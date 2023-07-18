@@ -6,7 +6,8 @@
 
 int main()
 {
-	if (execl("/bin/ls", "/bin/ls", "-l", "-a", NULL) == -1)
-		dprintf(2, "error: %s", strerror(errno));
+	char *s = "error";
+	if (execl("/bin/l", "/bin/l", "-l", "-a", NULL) == -1)
+		perror(s);
 	return (0);
 }

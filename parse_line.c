@@ -6,7 +6,7 @@ parse *parse_line(char *line)
 {
 	parse *ptr;
 	char *token;
-	int argc, i;
+	int argc, i, j;
 
 	const char *delim = " ";
 
@@ -42,7 +42,7 @@ parse *parse_line(char *line)
 			if (!ptr->args[i])
 			{
 				fprintf(stderr, "Memory allocation failed.\n");
-				for (int j = 0; j < i; j++)
+				for (j = 0; j < i; j++)
 					free(ptr->args[j]);
 				free(ptr->cmd);
 				free(ptr);

@@ -2,39 +2,79 @@
 
 /**
  */
-int handle_path(char *cmd)
+int handle_path(parse *parsed)
 {
 	struct stat sb;
-	char *filepath;
-	int access, st;
+	char *filepath, *token; //*append_path;
+	int Access, st, i, j, status;
+	char *argv[MAX_ARG];
+	pid_t pid;
 
 	char *path = getenv("PATH");
-	char *token = strtok(path, ":");
-	char *const argv[] = {cmd, NULL};
-	char *const arvp[] = {NULL};
-	int status = FALSE;
+	char *const envp[] = {NULL};
 
-	while (token)
+	for (i = 0; parsed->args[i] != NULL; i++)
 	{
-		filepath = _strcat(token, cmd);
-		access = access(filepath, X_OK);
+		argv[i] = _strdup(parsed->args[i]);
+		if (argv[i] == NULL)
+			free_arr_str(argv, i, 0);
+	}
+	argv[i] = NULL;
+	token = strtok(path, ":");
+	filepath = malloc(strlen(token) + strlen(parsed->cmd) + 2);
+	if (!filepath)
+	{
+		free_arr_str(argv, i, 0);
+		return (-1);
+	}
+	while (token != NULL)
+	{
+		strcpy(filepath, token);
+		_strcat(filepath, "/");
+		_strcat(filepath, parsed->cmd);
+		argv[0] = _strdup(filepath);
+		printf("filepath: %s\nargv[0]: %s\n", filepath, argv[0]);
+		Access = access(filepath, X_OK);
 		st = stat(filepath, &sb);
-		if (!access && !st && S_ISREG(sb.st_mode))
+		if (!Access && !st && S_ISREG(sb.st_mode))
 		{
 			pid = fork();
 			if (pid == -1)
-				return (TRUE);
+			{
+				i = 0;
+				while (argv[i])
+				{
+					free(argv[i]);
+					i++;
+				}
+				return (-1);
+			}
 			if (pid == 0)
 			{
-				if (execve(filepath, argv, arvp) == -1)
-				{
-					status = TRUE;
+				if ((status = execve(filepath, argv, envp) == -1))
 					exit(EXIT_FAILURE);
-				}
 			}
+			free(argv[0]);
+			free(filepath);
 			break;
 		}
+		free(argv[0]);
+		free(filepath);
 		token = strtok(NULL, ":");
+		if (token)
+			filepath = malloc(strlen(token) + strlen(parsed->cmd) + 2);
 	}
-	return (status);
+	free_arr_str(argv, i, 1);
+	if (status == -1)
+	{
+		pid = fork();
+		if (pid == -1)
+			return (-1);
+		if (pid == 0)
+		{
+			if ((status = execve(parsed->cmd, parsed->args, envp)) == -1)
+				exit(EXIT_FAILURE);
+		}
+	}
+	return (0);
 }
