@@ -30,8 +30,9 @@ char *_strdup(char *str);
 char *_strcat(char *dest, char *src);
 parse *parse_line(char *line);
 int handle_EOF(ssize_t read, char **buffer);
-int handle_path(parse *parsed);
-char *mem_alloc(char *str);
+int handle_path(parse *parsed, char *const envp[]);
 void free_arr_str(char **arr, int i, int j);
+int exec_cmd(parse *parsed, char *const envp[]);
+int check_valid(char *filepath);
 
 #endif
