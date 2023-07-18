@@ -5,16 +5,21 @@
 int exec_cmd(parse *parsed, char *const envp[])
 {
 	pid_t pid;
-
-	int status = 1;
+	int wstatus, status;
 
 	pid = fork();
 	if (pid == -1)
 		return (-1);
 	if (pid == 0)
 	{
-		if ((status = execve(parsed->cmd, parsed->args, envp)) == -1)
-			exit(EXIT_FAILURE);
+		if ((status = execve(parsed->cmd, parsed->args, envp) == -1))
+			exit(status);
+	}
+	else
+	{
+		waitpid(pid, &wstatus, 0);
+		if (WIFEXITED(wstatus))
+			status = WEXITSTATUS(wstatus);
 	}
 	return (status);
 }

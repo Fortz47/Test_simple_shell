@@ -2,42 +2,26 @@
 
 /**
  */
-int handle_path(parse *parse, char *const envp[])
+int handle_path(parse *parsed, char *const envp[])
 {
 	char *filepath, *token;
 	int index, status;
 	parse *argv;
-	pid_t pid;
 
+	puts("----starting----\n");
 	char *path = getenv("PATH");
+	int flag = FALSE;
 
-	argv = malloc((sizeof(parse) + sizeof(char *) * (MAX_ARG + 1)););
+	argv = malloc(sizeof(parse) + sizeof(char *) * (MAX_ARG + 1));
 	if (!argv)
 		return (-1);
-
-	argv->cmd = _strdup(parsed->cmd);
-	if (!argv->cmd)
-	{
-		free(argv);
-		return (-1);
-	}
-	for (index = 0; parsed->args[index] != NULL; index++)
-	{
-		argv->args[index] = _strdup(parsed->args[index]);
-		if (argv->args[index] == NULL)
-			free_arr_str(argv, index, 0);
-		free(argv->cmd);
-		free(argv);
-		return (-1);
-	}
-
+	
 	status = 1;
-	argv[index] = NULL;
 	token = strtok(path, ":");
 	filepath = malloc(strlen(token) + strlen(parsed->cmd) + 2);
 	if (!filepath)
 	{
-		free_arr_str(argv, index, 0);
+		free(argv);
 		return (-1);
 	}
 	while (token != NULL)
@@ -45,24 +29,54 @@ int handle_path(parse *parse, char *const envp[])
 		strcpy(filepath, token);
 		_strcat(filepath, "/");
 		_strcat(filepath, parsed->cmd);
-		argv->args[0] = _strdup(filepath);
-		//printf("filepath: %s\nargv[0]: %s\n", filepath, argv[0]);
+		argv->cmd = filepath;
+		argv->args[0] = filepath;
+		printf("filepath: %s\nargv[0]: %s\n", filepath, argv->args[0]);
 		if (check_valid(filepath))
 		{
-			status = exec_cmd(argv->cmd, argv->args, envp);
-			if (status == -1)
+			flag = TRUE;
+			for (index = 1; parsed->args[index] != NULL; index++)
+				argv->args[index] = parsed->args[index];
+			argv->args[index] = NULL;
+			status = exec_cmd(argv, envp);
+			printf("----status: %d----\n", status);
+			if (status != 0)
 			{
-				free_arr_str(argv->, index, 0);
 				free(filepath);
+				free(argv);
 				return (status);
 			}
+			break;
 		}
-		free(argv[0]);
 		free(filepath);
 		token = strtok(NULL, ":");
 		if (token)
 			filepath = malloc(strlen(token) + strlen(parsed->cmd) + 2);
 	}
-	free_arr_str(argv, index, 1);
+	if (flag && status == 0)
+		free(filepath);
+	free(argv);
 	return (status);
 }
+
+/*int main(void)
+{
+	parse *p = malloc(sizeof(parse) + sizeof(char *) * 3);
+	p->cmd = _strdup("ls");
+	p->args[0] = _strdup("ls");
+	p->args[1] = _strdup("-l");
+	p->args[2] = NULL;
+
+
+	char *const envp[] = {NULL};
+
+	int status = handle_path(p, envp);
+
+	printf("status: %d\n", status);
+	for (int i = 0; p->args[i] != NULL; i++)
+		free(p->args[i]);
+	free(p->cmd);
+	free(p);
+
+	return 0;
+}*/
