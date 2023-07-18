@@ -5,15 +5,15 @@
 int main(int ac, char *av[])
 {
 	parse *parsed;
-	pid_t pid;
-	int i, status;
+	int i;
 	ssize_t read;
 	char *buffer, *shell;
 	size_t len;
 
+	char *const envp[] = {NULL};
+
 	shell = av[0];
-	status = TRUE;
-	while (status)
+	while (TRUE)
 	{
 		buffer = NULL;
 		len = 0;
@@ -25,17 +25,19 @@ int main(int ac, char *av[])
 			continue;
 		}
 		parsed = parse_line(buffer);
-		if (!parsed)
-			continue;
-		if (handle_path(parsed) == -1)
+		if (parsed)
 		{
-			perror(shell);
+			if (handle_path(parsed, envp) == -1)
+			{
+				if (exec_cmd(parsed, envp) == -1)
+					perror(shell);
+			}
+			free(parsed->cmd);
+			for (i = 0; parsed->args[i] != NULL; i++)
+				free(parsed->args[i]);
+			free(parsed);
 		}
 		free(buffer);
-		free(parsed->cmd);
-		for (i = 0; parsed->args[i] != NULL; i++)
-			free(parsed->args[i]);
-		free(parsed);
 	}
 	return (0);
 }

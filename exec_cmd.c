@@ -4,6 +4,8 @@
  */
 int exec_cmd(parse *parsed, char *const envp[])
 {
+	pid_t pid;
+
 	int status = 1;
 
 	pid = fork();
