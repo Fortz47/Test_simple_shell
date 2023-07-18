@@ -26,29 +26,19 @@ int main(int ac, char *av[])
 			continue;
 		}
 		parsed = parse_line(buffer);
-		printf("cmd: %s\n", parsed->cmd);
-		for (int i = 0; parsed->args[i]; i++)
-		{
-			printf("arg[%d]: %s\n", i, parsed->args[i]);
-		}
 		if (parsed)
 		{
-			int ln = handle_path(parsed, envp);
-			printf("handle path: %d\n", ln);
-			if (ln == 1)
+			if (handle_path(parsed, envp) != 0)
 			{
-				//if (exec_cmd(parsed, envp) == -1)
-				int err = exec_cmd(parsed, envp);
-				printf("No_path: %d\n", err);
-				if (err != 0)
+				if (exec_cmd(parsed, envp) != 0)
 					perror(shell);
 			}
+			free(buffer);
 			free(parsed->cmd);
 			for (i = 0; parsed->args[i] != NULL; i++)
 				free(parsed->args[i]);
 			free(parsed);
 		}
-		free(buffer);
 	}
 	return (0);
 }

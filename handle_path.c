@@ -4,13 +4,12 @@
  */
 int handle_path(parse *parsed, char *const envp[])
 {
-	char *filepath, *token;
-	int index, status;
+	char *filepath, *token, *path;
+	int index, status, flag;
 	parse *argv;
 
-	puts("----starting----\n");
-	char *path = getenv("PATH");
-	int flag = FALSE;
+	path = _strdup(getenv("PATH"));
+	flag = FALSE;
 
 	argv = malloc(sizeof(parse) + sizeof(char *) * (MAX_ARG + 1));
 	if (!argv)
@@ -31,7 +30,6 @@ int handle_path(parse *parsed, char *const envp[])
 		_strcat(filepath, parsed->cmd);
 		argv->cmd = filepath;
 		argv->args[0] = filepath;
-		printf("filepath: %s\nargv[0]: %s\n", filepath, argv->args[0]);
 		if (check_valid(filepath))
 		{
 			flag = TRUE;
@@ -39,9 +37,9 @@ int handle_path(parse *parsed, char *const envp[])
 				argv->args[index] = parsed->args[index];
 			argv->args[index] = NULL;
 			status = exec_cmd(argv, envp);
-			printf("----status: %d----\n", status);
 			if (status != 0)
 			{
+				free(path);
 				free(filepath);
 				free(argv);
 				return (status);
@@ -55,28 +53,7 @@ int handle_path(parse *parsed, char *const envp[])
 	}
 	if (flag && status == 0)
 		free(filepath);
+	free(path);
 	free(argv);
 	return (status);
 }
-
-/*int main(void)
-{
-	parse *p = malloc(sizeof(parse) + sizeof(char *) * 3);
-	p->cmd = _strdup("ls");
-	p->args[0] = _strdup("ls");
-	p->args[1] = _strdup("-l");
-	p->args[2] = NULL;
-
-
-	char *const envp[] = {NULL};
-
-	int status = handle_path(p, envp);
-
-	printf("status: %d\n", status);
-	for (int i = 0; p->args[i] != NULL; i++)
-		free(p->args[i]);
-	free(p->cmd);
-	free(p);
-
-	return 0;
-}*/

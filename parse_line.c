@@ -42,8 +42,7 @@ parse *parse_line(char *line)
 			if (!ptr->args[i])
 			{
 				fprintf(stderr, "Memory allocation failed.\n");
-				for (j = 0; j < i; j++)
-					free(ptr->args[j]);
+				free_arr_str(ptr->args, i, 0);
 				free(ptr->cmd);
 				free(ptr);
 				return NULL;
