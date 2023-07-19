@@ -2,7 +2,7 @@
 
 /**
  */
-parse *parse_line(char *line, ssize_t len)
+parse *parse_line(char *line)
 {
 	parse *ptr;
 	char *token;
@@ -13,7 +13,7 @@ parse *parse_line(char *line, ssize_t len)
 	token = strtok(line, delim);
 	if (!token || !line)
 		return (NULL);
-	ptr = malloc(sizeof(parse) + sizeof(char) * (len + 1));
+	ptr = malloc(sizeof(parse) + sizeof(char *) * (MAX_ARG + 1));
 	if (ptr == NULL)
 		return (NULL);
 	ptr->cmd = _strdup(token);
