@@ -7,31 +7,31 @@ int main(int ac, char *av[])
 	parse *parsed;
 	int i;
 	ssize_t read;
-	char *buffer, *shell;
+	char *buffer;
 	size_t len;
 
 	char *const envp[] = {NULL};
 
-	shell = av[0];
 	while (TRUE)
 	{
 		buffer = NULL;
 		len = 0;
 		write(STDOUT_FILENO, "($) ", 4);
 		read = getline(&buffer, &len, stdin);
-		if ((read = handle_EOF(read, &buffer)) == -1)
+		handle_EOF(&read, &buffer);
+		if (!read)
 		{
-			printf("cant getline");
-			perror(shell);
+			free(buffer);
 			continue;
 		}
-		parsed = parse_line(buffer);
+
+		parsed = parse_line(buffer, read);
 		if (parsed)
 		{
 			if (handle_path(parsed, envp) != 0)
 			{
 				if (exec_cmd(parsed, envp) != 0)
-					perror(shell);
+					perror(av[0]);
 			}
 			free(buffer);
 			free(parsed->cmd);

@@ -4,7 +4,6 @@
 #define TRUE 1
 #define FALSE 0
 #define BUFFER_SIZE 1024
-#define MAX_ARG 10
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -21,6 +20,7 @@
  */
 typedef struct parse
 {
+	int argc;
 	char *cmd;
 	char *args[];
 } parse;
@@ -28,11 +28,12 @@ typedef struct parse
 int _strcmp(const char *s1, const char *s2);
 char *_strdup(char *str);
 char *_strcat(char *dest, char *src);
-parse *parse_line(char *line);
-int handle_EOF(ssize_t read, char **buffer);
+parse *parse_line(char *line, ssize_t len);
+void handle_EOF(ssize_t *read, char **buffer);
 int handle_path(parse *parsed, char *const envp[]);
 void free_arr_str(char **arr, int i, int j);
 int exec_cmd(parse *parsed, char *const envp[]);
 int check_valid(char *filepath);
+int return_num_of_arg(char *buffer);
 
 #endif

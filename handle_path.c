@@ -8,21 +8,26 @@ int handle_path(parse *parsed, char *const envp[])
 	int index, status, flag;
 	parse *argv;
 
-	path = _strdup(getenv("PATH"));
-	flag = FALSE;
-
-	argv = malloc(sizeof(parse) + sizeof(char *) * (MAX_ARG + 1));
-	if (!argv)
-		return (-1);
-	
 	status = 1;
+	path = _strdup(getenv("PATH"));
+	if (!path)
+		return (status);
+	argv = malloc(sizeof(parse) + sizeof(char *) * (parsed->argc + 1));
+	if (!argv)
+	{
+		free(path);
+		return (status);
+	}
+
 	token = strtok(path, ":");
 	filepath = malloc(strlen(token) + strlen(parsed->cmd) + 2);
 	if (!filepath)
 	{
+		free(path);
 		free(argv);
-		return (-1);
+		return (status);
 	}
+	flag = FALSE;
 	while (token != NULL)
 	{
 		strcpy(filepath, token);

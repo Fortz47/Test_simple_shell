@@ -2,25 +2,26 @@
 
 /**
  */
-int handle_EOF(ssize_t read, char **buffer)
+void handle_EOF(ssize_t *read, char **buffer)
 {
 	char *buf;
 
 	buf = *buffer;
-	if (read == -1)
+	if (*read == -1)
 	{
 		if (feof(stdin))
 		{
+			free(buf);
 			write(STDIN_FILENO, "\nlogout\n", 8);
 			exit(EXIT_SUCCESS);
 		}
 	}
 	else
 	{
-		if (buf[read - 1] == '\n')
+		if (buf[*read - 1] == '\n')
 		{
-			(buf[read - 1] = '\0');
-			read--;
+			(buf[*read - 1] = '\0');
+			(*read)--;
 		}
 		if (_strcmp(buf, "exit"))
 		{
@@ -29,5 +30,4 @@ int handle_EOF(ssize_t read, char **buffer)
 			exit(EXIT_SUCCESS);
 		}
 	}
-	return (read);
 }

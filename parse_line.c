@@ -2,20 +2,20 @@
 
 /**
  */
-parse *parse_line(char *line)
+parse *parse_line(char *line, ssize_t len)
 {
 	parse *ptr;
 	char *token;
-	int argc, i, j;
+	int i, ac;
 
-	const char *delim = " ";
-
-	token = strtok(line, delim);
+	ac = return_num_of_arg(line);
+	token = strtok(line, " ");
 	if (!token || !line)
 		return (NULL);
-	ptr = malloc(sizeof(parse) + sizeof(char *) * (MAX_ARG + 1));
+	ptr = malloc(sizeof(parse) + sizeof(char *) * (ac + 1));
 	if (ptr == NULL)
 		return (NULL);
+	ptr->argc = ac;
 	ptr->cmd = _strdup(token);
 	if (!ptr->cmd)
 	{
@@ -33,9 +33,9 @@ parse *parse_line(char *line)
 		return NULL;
 	}
 	i++;
-	while (token != NULL && i < MAX_ARG)
+	while (token != NULL)
 	{
-		token = strtok(NULL, delim);
+		token = strtok(NULL, " ");
 		if (token)
 		{
 			ptr->args[i] = _strdup(token);
