@@ -2,8 +2,6 @@
 
 /**
  */
-char *shell;
-
 int main(int ac __attribute__((unused)), char *av[])
 {
 	parse *parsed;
@@ -14,7 +12,6 @@ int main(int ac __attribute__((unused)), char *av[])
 	char **envp;
 
 	envp = environ;
-	shell = av[0];
 	while (TRUE)
 	{
 		buffer = NULL;
@@ -34,7 +31,7 @@ int main(int ac __attribute__((unused)), char *av[])
 			if (handle_path(parsed, envp) != 0)
 			{
 				if (exec_cmd(parsed, envp) != 0)
-					perror(shell);
+					perror(av[0]);
 			}
 			free(buffer);
 			free(parsed->cmd);
@@ -42,6 +39,8 @@ int main(int ac __attribute__((unused)), char *av[])
 				free(parsed->args[i]);
 			free(parsed);
 		}
+		else
+			perror(av[0]);
 	}
 	return (0);
 }
