@@ -31,7 +31,7 @@ int _strcmp(const char *s1, const char *s2);
 char *_strdup(char *str);
 char *_strcat(char *dest, char *src);
 parse *parse_line(char *line);
-void handle_EOF(ssize_t *read, char **buffer);
+void handle_EOF(ssize_t *read, char *buffer);
 int handle_path(parse *parsed, char **envp);
 void free_arr_str(char **arr, int i, int j);
 int exec_cmd(parse *parsed, char **);

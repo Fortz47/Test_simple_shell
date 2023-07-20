@@ -18,13 +18,12 @@ int main(int ac __attribute__((unused)), char *av[])
 		len = 0;
 		write(STDOUT_FILENO, "($) ", 4);
 		read = getline(&buffer, &len, stdin);
-		handle_EOF(&read, &buffer);
+		handle_EOF(&read, buffer);
 		if (!read)
 		{
 			free(buffer);
 			continue;
 		}
-
 		parsed = parse_line(buffer);
 		if (parsed)
 		{
@@ -37,10 +36,9 @@ int main(int ac __attribute__((unused)), char *av[])
 			free(parsed->cmd);
 			for (i = 0; parsed->args[i] != NULL; i++)
 				free(parsed->args[i]);
+			free(parsed->args);
 			free(parsed);
 		}
-		else
-			perror(av[0]);
 	}
 	return (0);
 }
