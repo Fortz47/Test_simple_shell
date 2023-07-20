@@ -11,26 +11,40 @@ parse *parse_line(char *line)
 	ac = return_num_of_arg(line);
 	token = strtok(line, " ");
 	if (!token || !line)
+	{
+		if (!token)
+			perror(shell);
 		return (NULL);
-	ptr = malloc(sizeof(parse) + sizeof(char *) * (ac + 1));
+	}
+	ptr = malloc(sizeof(parse));
 	if (ptr == NULL)
+	{
+		perror(shell);
 		return (NULL);
+	}
 	ptr->argc = ac;
 	ptr->cmd = _strdup(token);
 	if (!ptr->cmd)
 	{
-		fprintf(stderr, "Memory allocation failed.\n");
+		perror(shell);
 		free(ptr);
 		return (NULL);
 	}
 	i = 0;
+	ptr->args = malloc(sizeof(char *) * (ac + 1));
+	if (!ptr->args)
+	{
+		free(ptr->cmd);
+		free(ptr);
+		return (NULL);
+	}
 	ptr->args[i] = _strdup(token);
 	if (!ptr->args[i])
 	{
-		fprintf(stderr, "Memory allocation failed.\n");
+		perror(shell);
 		free(ptr->cmd);
 		free(ptr);
-		return NULL;
+		return (NULL);
 	}
 	i++;
 	while (token != NULL)
@@ -41,11 +55,11 @@ parse *parse_line(char *line)
 			ptr->args[i] = _strdup(token);
 			if (!ptr->args[i])
 			{
-				fprintf(stderr, "Memory allocation failed.\n");
+				perror(shell);
 				free_arr_str(ptr->args, i, 0);
 				free(ptr->cmd);
 				free(ptr);
-				return NULL;
+				return (NULL);
 			}
 			i++;
 		}
