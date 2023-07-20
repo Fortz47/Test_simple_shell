@@ -11,7 +11,7 @@ int main(int ac __attribute__((unused)), char *av[])
 	ssize_t read;
 	char *buffer;
 	size_t len;
-	char **envp
+	char **envp;
 
 	envp = environ;
 	shell = av[0];
