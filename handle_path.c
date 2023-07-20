@@ -2,7 +2,7 @@
 
 /**
  */
-int handle_path(parse *parsed, char *const envp[])
+int handle_path(parse *parsed, char **envp)
 {
 	char *filepath, *token, *path;
 	int index, status, flag;

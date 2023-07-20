@@ -2,7 +2,7 @@
 
 /**
  */
-int exec_cmd(parse *parsed, char *const envp[])
+int exec_cmd(parse *parsed, char **envp)
 {
 	pid_t pid;
 	int wstatus, status;

@@ -2,7 +2,7 @@
 
 /**
  */
-int main(int ac, char *av[])
+int main(int ac __attribute__((unused)), char *av[])
 {
 	parse *parsed;
 	int i;
@@ -10,7 +10,7 @@ int main(int ac, char *av[])
 	char *buffer;
 	size_t len;
 
-	char *const envp[] = {NULL};
+	char **envp = environ;
 
 	while (TRUE)
 	{
@@ -25,7 +25,7 @@ int main(int ac, char *av[])
 			continue;
 		}
 
-		parsed = parse_line(buffer, read);
+		parsed = parse_line(buffer);
 		if (parsed)
 		{
 			if (handle_path(parsed, envp) != 0)

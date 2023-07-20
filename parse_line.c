@@ -2,7 +2,7 @@
 
 /**
  */
-parse *parse_line(char *line, ssize_t len)
+parse *parse_line(char *line)
 {
 	parse *ptr;
 	char *token;

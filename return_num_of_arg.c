@@ -11,7 +11,7 @@ int return_num_of_arg(char *buffer)
 	buf = _strdup(buffer);
 	if (!buf)
 		return (argc);
-	if (token = strtok(buf, " "))
+	if ((token = strtok(buf, " ")))
 		argc++;
 	while (token)
 	{
