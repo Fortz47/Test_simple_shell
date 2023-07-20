@@ -2,6 +2,8 @@
 
 /**
  */
+char *shell;
+
 int main(int ac __attribute__((unused)), char *av[])
 {
 	parse *parsed;
@@ -9,10 +11,10 @@ int main(int ac __attribute__((unused)), char *av[])
 	ssize_t read;
 	char *buffer;
 	size_t len;
+	char **envp
 
-	char **envp = environ;
-	char *shell = av[0];
-
+	envp = environ;
+	shell = av[0];
 	while (TRUE)
 	{
 		buffer = NULL;
