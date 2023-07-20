@@ -4,6 +4,7 @@
  */
 parse *parse_line(char *line)
 {
+	extern char *shell;
 	parse *ptr;
 	char *token;
 	int i, ac;
