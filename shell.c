@@ -11,6 +11,7 @@ int main(int ac __attribute__((unused)), char *av[])
 	size_t len;
 
 	char **envp = environ;
+	char *shell = av[0];
 
 	while (TRUE)
 	{
@@ -31,7 +32,7 @@ int main(int ac __attribute__((unused)), char *av[])
 			if (handle_path(parsed, envp) != 0)
 			{
 				if (exec_cmd(parsed, envp) != 0)
-					perror(av[0]);
+					perror(shell);
 			}
 			free(buffer);
 			free(parsed->cmd);
