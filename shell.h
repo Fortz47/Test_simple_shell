@@ -26,7 +26,6 @@ typedef struct parse
 } parse;
 
 extern char **environ;
-extern char *shell;
 
 int _strcmp(const char *s1, const char *s2);
 char *_strdup(char *str);
