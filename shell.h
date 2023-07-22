@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <stdarg.h>
 #include <string.h>
 #include <errno.h>
 #include <sys/types.h>
@@ -37,5 +38,6 @@ void free_arr_str(char **arr, int i, int j);
 int exec_cmd(parse *parsed, char **);
 int check_valid(char *filepath);
 int return_num_of_arg(char *buffer);
+char *then_free(int count, char *_return, parse *ptr, ...);
 
 #endif

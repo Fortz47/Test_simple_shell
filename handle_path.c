@@ -1,12 +1,18 @@
 #include "shell.h"
 
 /**
+ * handle_path - appends command input to PATH
+ * @parsed: pointer to struct parse
+ * @envp: array of environment variables
+ *
+ * Return: 0 if command exist on PATH or 1 if not
  */
 int handle_path(parse *parsed, char **envp)
 {
 	char *filepath, *token, *path;
-	int index, status, flag;
+	int index, flag;
 	parse *argv;
+	char status;
 
 	status = 1;
 	path = _strdup(getenv("PATH"));
@@ -21,18 +27,20 @@ int handle_path(parse *parsed, char **envp)
 	argv->args = malloc(sizeof(char *) * parsed->argc);
 	if (!argv->args)
 	{
-		free(path);
+		then_free(1, &status, argv, &path);
+		/*free(path);
 		free(argv);
-		return (status);
+		return (status);*/
 	}
 	token = strtok(path, ":");
 	filepath = malloc(strlen(token) + strlen(parsed->cmd) + 2);
 	if (!filepath)
 	{
-		free(path);
+		then_free(2, &status, argv, &path, argv->args);
+		/*free(path);
 		free(argv->args);
 		free(argv);
-		return (status);
+		return (status);*/
 	}
 	flag = FALSE;
 	while (token != NULL)
@@ -50,11 +58,12 @@ int handle_path(parse *parsed, char **envp)
 			status = exec_cmd(argv, envp);
 			if (status != 0)
 			{
-				free(path);
+				then_free(3, &status, argv, &path, &filepath, argv->args);
+				/*free(path);
 				free(filepath);
 				free(argv->args);
 				free(argv);
-				return (status);
+				return (status);*/
 			}
 			break;
 		}
@@ -65,44 +74,9 @@ int handle_path(parse *parsed, char **envp)
 	}
 	if (flag && status == 0)
 		free(filepath);
-	free(path);
+	then_free(2, &status, argv, &path, argv->args);
+	/*free(path);
 	free(argv->args);
-	free(argv);
+	free(argv);*/
 	return (status);
 }
-
-/*int main(void)
-{
-    int i = 0;
-    parse *p;
-    //char *cmd = strdup("ls -l -a");
-    char *buffer = NULL;
-    ssize_t len = 0;
-    getline(&buffer, &len, stdin);
-
-    char **envp = {NULL};
-    buffer[len - 1] = '\0';
-    p = parse_line(buffer);
-    if (!p) {
-        printf("Failed to parse the command.\n");
-        return 1;
-    }
-
-    puts(p->cmd);
-    while (p->args[i] != NULL)
-    {
-        puts(p->args[i]);
-        i++;
-    }
-    handle_path(p, envp);
-
-    // Cleanup and free memory
-    free(buffer);
-    free(p->cmd);
-    for (i = 0; p->args[i] != NULL; i++)
-        free(p->args[i]);
-    free(p->args);
-    free(p);
-
-    return 0;
-}*/

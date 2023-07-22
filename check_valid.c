@@ -1,6 +1,11 @@
 #include "shell.h"
 
 /**
+ * check_valid - check if a file exists, is executable
+ * and is a regular file.
+ * @filepath: file to check
+ *
+ * Return: True(1), or False(0)
  */
 int check_valid(char *filepath)
 {

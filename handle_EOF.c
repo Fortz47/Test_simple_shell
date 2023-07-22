@@ -1,6 +1,9 @@
 #include "shell.h"
 
 /**
+ * handle_EOF - checks for EOF(ctrl + D) and/or "exit"
+ * @read: number of characters read(from stdin)
+ * @buffer: pointer to read input(from stdin)
  */
 void handle_EOF(ssize_t *read, char *buffer)
 {

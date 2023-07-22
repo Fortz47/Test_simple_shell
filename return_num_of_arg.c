@@ -1,6 +1,11 @@
 #include "shell.h"
 
 /**
+ * return_num_of_arg - returns no. of args(strings) in
+ * an array
+ * @buffer: array
+ *
+ * Return: no of args(strings)
  */
 int return_num_of_arg(char *buffer)
 {
@@ -11,7 +16,8 @@ int return_num_of_arg(char *buffer)
 	buf = _strdup(buffer);
 	if (!buf)
 		return (argc);
-	if ((token = strtok(buf, " ")))
+	token = strtok(buf, " ");
+	if (token)
 		argc++;
 	while (token)
 	{

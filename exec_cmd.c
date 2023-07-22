@@ -1,6 +1,11 @@
 #include "shell.h"
 
 /**
+ * exec_cmd - executes a shell command
+ * @parsed: pointer to struct parse
+ * @envp: array of strings containing environment variables
+ *
+ * Return: 0 if successful, 1 is not
  */
 int exec_cmd(parse *parsed, char **envp)
 {
@@ -12,7 +17,8 @@ int exec_cmd(parse *parsed, char **envp)
 		return (-1);
 	if (pid == 0)
 	{
-		if ((status = execve(parsed->cmd, parsed->args, envp) == -1))
+		status = execve(parsed->cmd, parsed->args, envp);
+		if (status == -1)
 			exit(status);
 	}
 	else
