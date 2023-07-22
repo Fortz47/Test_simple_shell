@@ -39,5 +39,6 @@ int exec_cmd(parse *parsed, char **);
 int check_valid(char *filepath);
 int return_num_of_arg(char *buffer);
 char *then_free(int count, char *_return, parse *ptr, ...);
+int _then_free(int count, char *_return, parse *ptr, ...);
 
 #endif
