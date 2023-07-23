@@ -14,7 +14,7 @@ parse *parse_line(char *line)
 	ac = return_num_of_arg(line);
 	token = strtok(line, " ");
 	if (!token || !line)
-		return (NULL);
+	return (NULL);
 	ptr = malloc(sizeof(parse));
 	if (ptr == NULL)
 		return (NULL);
@@ -33,10 +33,7 @@ parse *parse_line(char *line)
 		token = strtok(NULL, " ");
 		ptr->args[i] = _strdup(token);
 		if (!ptr->args[i])
-		{
-			free_arr_str(ptr->args, i, 0);
 			return (then_free(2, NULL, ptr, &ptr->cmd, ptr->args));
-		}
 	}
 	ptr->args[i] = NULL;
 	return (ptr);

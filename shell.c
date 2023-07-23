@@ -32,7 +32,7 @@ int main(int ac __attribute__((unused)), char *av[])
 		parsed = parse_line(buffer);
 		if (parsed)
 		{
-			if (handle_path(parsed, envp) != 0)
+			if (handle_path(parsed) != 0)
 			{
 				if (exec_cmd(parsed, envp) != 0)
 					perror(av[0]);
