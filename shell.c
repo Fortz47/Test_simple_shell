@@ -1,6 +1,11 @@
 #include "shell.h"
 
 /**
+ * main - entry point
+ * @ac: argument count
+ * @av: array of argument
+ *
+ * Return: 0, success
  */
 int main(int ac __attribute__((unused)), char *av[])
 {

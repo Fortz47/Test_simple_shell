@@ -14,10 +14,13 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <sys/stat.h>
-#include <fcntl.h>
 #include <signal.h>
 
 /**
+ * struct parse - a struct parse
+ * @argc: number of argument parsed
+ * @cmd: command
+ * @args: array of parsed arguments
  */
 typedef struct parse
 {
@@ -38,7 +41,7 @@ void free_arr_str(char **arr, int i, int j);
 int exec_cmd(parse *parsed, char **);
 int check_valid(char *filepath);
 int return_num_of_arg(char *buffer);
-char *then_free(int count, char *_return, parse *ptr, ...);
-int _then_free(int count, int _return, parse *ptr, ...);
+parse *then_free(int count, parse *_return, parse *ptr, ...);
+int _atoi(char *str);
 
 #endif

@@ -8,7 +8,7 @@
  *
  * Return: return value
  */
-char *then_free(int count, char *_return, parse *ptr, ...)
+parse *then_free(int count, parse *_return, parse *ptr, ...)
 {
 	va_list list;
 

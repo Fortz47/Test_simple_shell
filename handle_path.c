@@ -26,20 +26,18 @@ int handle_path(parse *parsed, char **envp)
 	argv->args = malloc(sizeof(char *) * parsed->argc);
 	if (!argv->args)
 	{
-		return (_then_free(1, status, argv, &path));
-		/*free(path);
+		free(path);
 		free(argv);
-		return (status);*/
+		return (status);
 	}
 	token = strtok(path, ":");
 	filepath = malloc(strlen(token) + strlen(parsed->cmd) + 2);
 	if (!filepath)
 	{
-		return (_then_free(2, status, argv, &path, argv->args));
-		/*free(path);
+		free(path);
 		free(argv->args);
 		free(argv);
-		return (status);*/
+		return (status);
 	}
 	flag = FALSE;
 	while (token != NULL)
@@ -57,12 +55,11 @@ int handle_path(parse *parsed, char **envp)
 			status = exec_cmd(argv, envp);
 			if (status != 0)
 			{
-				return (_then_free(3, status, argv, &path, &filepath, argv->args));
-				/*free(path);
+				free(path);
 				free(filepath);
 				free(argv->args);
 				free(argv);
-				return (status);*/
+				return (status);
 			}
 			break;
 		}
@@ -73,9 +70,8 @@ int handle_path(parse *parsed, char **envp)
 	}
 	if (flag && status == 0)
 		free(filepath);
-	return (_then_free(2, status, argv, &path, argv->args));
-	/*free(path);
+	free(path);
 	free(argv->args);
 	free(argv);
-	return (status);*/
+	return (status);
 }

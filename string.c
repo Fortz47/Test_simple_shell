@@ -41,7 +41,7 @@ char *_strcpy(char *dest, char *src)
  * _strcmp - compares two strings
  * @s1: string 1
  * @s2: string 2
- * Return: 0 if equal, else a -ve or +ve int
+ * Return: 1 if equal, else 0
  */
 
 int _strcmp(const char *s1, const char *s2)

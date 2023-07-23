@@ -1,0 +1,11 @@
+#include "shell.h"
+
+/**
+ */
+void handle_built-in(parse *ptr);
+{
+	if (parse->cmd == "exit")
+	{
+		free()
+	}
+}

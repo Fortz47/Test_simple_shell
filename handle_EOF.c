@@ -7,6 +7,9 @@
  */
 void handle_EOF(ssize_t *read, char *buffer)
 {
+	char *token;
+	int status;
+
 	if (*read == -1)
 	{
 		if (feof(stdin))
@@ -23,10 +26,17 @@ void handle_EOF(ssize_t *read, char *buffer)
 			buffer[*read - 1] = '\0';
 			(*read)--;
 		}
-		if (_strcmp(buffer, "exit"))
+		token = strtok(buffer, " ");
+		if (_strcmp(token, "exit"))
 		{
-			free(buffer);
-			write(STDIN_FILENO, "logout\n", 8);
+			token = strtok(NULL, " ");
+			if (token)
+			{
+				status = _atoi(token);
+				free(buffer);
+				write(STDIN_FILENO, "logout\n", 8);
+				exit(status);
+			}
 			exit(EXIT_SUCCESS);
 		}
 	}
